@@ -7,6 +7,7 @@ app.register(fastifyView, {
   engine: {
     ejs: require("ejs"),
   },
+  templates: "./views",
 });
 
 module.exports = { app };

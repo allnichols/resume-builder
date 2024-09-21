@@ -1,7 +1,7 @@
 const { app } = require("./config");
 
-app.get("/", async (req, reply) => {
-  return { hello: "world" };
+app.get("/", (req, reply) => {
+  reply.view("index.ejs", { title: "Resume Builder" });
 });
 
 app.listen({ port: 3000 }, (err) => {
