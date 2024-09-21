@@ -4,14 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %></title>
+    <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
     <h1><%= title %></h1>
-    <canvas id="pdf-canvas"></canvas>
-    <script src="pdfjs/pdf.mjs" type="module"></script>
+    <div class="container">
+      <div class="form-container">
+        <h2><%= message %></h2>
+      </div>
+      <hr />
+      <div class="canvas-container">
+        <canvas id="pdf-canvas"></canvas>
+      </div>
+    </div>
+
     <script type="module">
-      import * as pdfjsLib from "./pdfjs/pdf.mjs";
-      pdfjsLib.GlobalWorkerOptions.workerSrc = "pdfjs/pdf.worker.mjs";
+      import * as pdfjsLib from "./js/pdfjs/pdf.mjs";
+      pdfjsLib.GlobalWorkerOptions.workerSrc = "js/pdfjs/pdf.worker.mjs";
       fetch("/resume")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
@@ -25,10 +34,9 @@
           loadingTask.promise
             .then((pdf) => {
               pdf.getPage(1).then((page) => {
-                const viewport = page.getViewport({ scale: 1.5 });
+                const viewport = page.getViewport({ scale: 1 });
                 canvas.height = viewport.height;
                 canvas.width = viewport.width;
-
                 page.render({
                   canvasContext: ctx,
                   viewport: viewport,

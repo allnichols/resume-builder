@@ -2,7 +2,7 @@ const { app } = require("./config");
 const { PDFDocument, rgb } = require("pdf-lib");
 
 app.get("/", (req, reply) => {
-  reply.view("index.ejs", { title: "Resume Builder" });
+  reply.view("index.ejs", { title: "Resume Builder", message: "Hello World!" });
 });
 
 app.get("/resume", async (req, reply) => {
