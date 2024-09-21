@@ -1,6 +1,4 @@
-const Fastify = require("fastify");
-
-const app = Fastify();
+const { app } = require("./config");
 
 app.get("/", async (req, reply) => {
   return { hello: "world" };
