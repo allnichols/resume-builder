@@ -1,32 +1,6 @@
-.container {
-  display: flex;
-  justify-content: space-between;
-
-  & hr {
-    background-color: lightgrey;
-  }
-}
-
-.canvas-container {
-  border: 1px solid grey;
-  padding: 16px;
-  height: 500px;
-  width: 50%;
-  & #canvas {
-    border: 1px solid black;
-  }
-  & canvas {
-    margin-inline: auto;
-    display: block;
-    border: 1px solid black;
-    height: 100%;
-    width: 300px;
-  }
-}
-
-.form-container {
-  width: 50%;
-  max-width: 300px;
-  padding: 16px;
-  border: 1px solid grey;
+canvas {
+  width: 85%;
+  height: 90%;
+  margin-inline: auto;
+  display: block;
 }

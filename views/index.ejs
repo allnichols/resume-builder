@@ -5,16 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %></title>
     <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
   </head>
   <body>
-    <h1><%= title %></h1>
+    <!-- <h1><%= title %></h1> -->
     <div class="container">
-      <div class="form-container">
-        <h2><%= message %></h2>
-      </div>
-      <hr />
-      <div class="canvas-container">
-        <canvas id="pdf-canvas"></canvas>
+      <div class="row justify-content-between">
+        <div class="col-4">
+          <!-- make a template part for the form -->
+          <div class="row">
+            <div class="col">
+              <input
+                type="text"
+                class="form-control"
+                id="role"
+                placeholder="Desired Role"
+                aria-label="desired role"
+                value="<%= resume.role %>"
+              />
+            </div>
+            <div class="col">
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                placeholder="Full Name"
+                aria-label="Full Name"
+                value="<%= resume.name %>"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="bg-secondary">
+            <canvas id="pdf-canvas"></canvas>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -35,6 +61,7 @@
             .then((pdf) => {
               pdf.getPage(1).then((page) => {
                 const viewport = page.getViewport({ scale: 1 });
+                console.log(canvas.height, canvas.width);
                 canvas.height = viewport.height;
                 canvas.width = viewport.width;
                 page.render({

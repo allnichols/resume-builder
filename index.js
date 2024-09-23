@@ -1,8 +1,18 @@
 const { app } = require("./config");
-const { PDFDocument, rgb } = require("pdf-lib");
+const { PDFDocument, rgb, StandardFontValues } = require("pdf-lib");
+
+const resume = {
+  name: "John Doe",
+  role: "Software Developer",
+};
 
 app.get("/", (req, reply) => {
-  reply.view("index.ejs", { title: "Resume Builder", message: "Hello World!" });
+  console.log(resume);
+  reply.view("index.ejs", {
+    title: "Resume Builder",
+    message: "Hello World!",
+    resume: resume,
+  });
 });
 
 app.get("/resume", async (req, reply) => {
@@ -10,11 +20,19 @@ app.get("/resume", async (req, reply) => {
 
   const page = pdf.addPage([612, 792]);
 
-  page.drawText("Hello World!", {
-    x: 50,
-    y: 700,
-    size: 50,
-    color: rgb(0, 0, 0),
+  const headingFontSize = 24;
+  const normalFontSize = 12;
+  const content = [
+    { text: resume.role, x: 200, y: 750, size: headingFontSize },
+    { text: resume.name, x: 50, y: 700, size: headingFontSize },
+  ];
+
+  content.forEach((c) => {
+    page.drawText(c.text, {
+      x: c.xy,
+      y: c.y,
+      size: c.size,
+    });
   });
 
   const pdfBytes = await pdf.save();
