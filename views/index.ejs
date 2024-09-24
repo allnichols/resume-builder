@@ -3,13 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= title %></title>
+    <title>Resume Builder</title>
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/bootstrap.min.css" />
   </head>
   <body>
-    <!-- <h1><%= title %></h1> -->
-    <div class="container">
+    <div class="container mt-5">
       <div class="row justify-content-between">
         <div class="col-4">
           <!-- make a template part for the form -->
@@ -29,21 +28,24 @@
                 type="text"
                 class="form-control"
                 id="name"
+                name="name"
                 placeholder="Full Name"
                 aria-label="Full Name"
                 value="<%= resume.name %>"
+                hx-post="resume"
+                hx-trigger="keyup changed delay:750ms"
               />
             </div>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-6">
           <div class="bg-secondary">
             <canvas id="pdf-canvas"></canvas>
           </div>
         </div>
       </div>
     </div>
-
+    <script src="js/htmx/htmx.min.js"></script>
     <script type="module">
       import * as pdfjsLib from "./js/pdfjs/pdf.mjs";
       pdfjsLib.GlobalWorkerOptions.workerSrc = "js/pdfjs/pdf.worker.mjs";
@@ -61,7 +63,7 @@
             .then((pdf) => {
               pdf.getPage(1).then((page) => {
                 const viewport = page.getViewport({ scale: 1 });
-                console.log(canvas.height, canvas.width);
+                // console.log(canvas.height, canvas.width);
                 canvas.height = viewport.height;
                 canvas.width = viewport.width;
                 page.render({

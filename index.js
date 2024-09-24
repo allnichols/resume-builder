@@ -1,17 +1,14 @@
 const { app } = require("./config");
 const { PDFDocument, rgb, StandardFontValues } = require("pdf-lib");
 
-const resume = {
+let resume = {
   name: "John Doe",
   role: "Software Developer",
 };
 
 app.get("/", (req, reply) => {
-  console.log(resume);
   reply.view("index.ejs", {
-    title: "Resume Builder",
-    message: "Hello World!",
-    resume: resume,
+    resume,
   });
 });
 
@@ -39,6 +36,12 @@ app.get("/resume", async (req, reply) => {
 
   reply.header("Content-Type", "application/pdf");
   reply.send(pdfBytes);
+});
+
+app.post("/resume", (req, reply) => {
+  console.log("hit", req.body.name);
+  resume.name = req.body.name;
+  reply.send(resume.name);
 });
 
 app.listen({ port: 3000 }, (err) => {
