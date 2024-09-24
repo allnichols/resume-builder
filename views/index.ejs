@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="css/bootstrap.min.css" />
   </head>
   <body>
-    <div class="container mt-5">
-      <div class="row justify-content-between">
+    <div class="container-fluid" style="height: 92vh">
+      <div class="row justify-content-between h-100">
         <div class="col-4">
           <!-- make a template part for the form -->
           <div class="row">
@@ -38,8 +38,11 @@
             </div>
           </div>
         </div>
-        <div class="col-6">
-          <div class="bg-secondary">
+        <div class="col-6 bg-secondary">
+          <div
+            class="position-relative rounded-1 overflow-hidden h-100 mx-auto"
+          >
+            <canvas id="pdf-canvas-2"></canvas>
             <canvas id="pdf-canvas"></canvas>
           </div>
         </div>
@@ -58,14 +61,25 @@
           const canvas = document.getElementById("pdf-canvas");
           const ctx = canvas.getContext("2d");
 
+          // second canvas on load
+          const canvas2 = document.getElementById("pdf-canvas-2");
+          const ctx2 = canvas2.getContext("2d");
+
           const loadingTask = pdfjsLib.getDocument(url);
           loadingTask.promise
             .then((pdf) => {
               pdf.getPage(1).then((page) => {
                 const viewport = page.getViewport({ scale: 1 });
-                // console.log(canvas.height, canvas.width);
+
                 canvas.height = viewport.height;
                 canvas.width = viewport.width;
+
+                canvas2.height = canvas.height;
+                canvas2.width = canvas.width;
+
+                ctx2.fillStyle = "white";
+                ctx2.fillRect(0, 0, canvas2.width, canvas2.height);
+
                 page.render({
                   canvasContext: ctx,
                   viewport: viewport,
