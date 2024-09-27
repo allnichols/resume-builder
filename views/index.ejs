@@ -90,6 +90,48 @@
               console.error(err);
             });
         });
+
+      document.addEventListener("htmx:afterRequest", function (evt) {
+        if (evt.detail.pathInfo.responsePath === "/resume") {
+          fetch("/resume")
+            .then((res) => res.arrayBuffer())
+            .then((buf) => {
+              console.log("resume updated");
+
+              const blob = new Blob([buf], { type: "application/pdf" });
+              const url = URL.createObjectURL(blob);
+
+              const canvas = document.getElementById("pdf-canvas");
+              const ctx = canvas.getContext("2d");
+
+              // second canvas on load
+              const canvas2 = document.getElementById("pdf-canvas-2");
+              const ctx2 = canvas2.getContext("2d");
+
+              const loadingTask = pdfjsLib.getDocument(url);
+              loadingTask.promise
+                .then((pdf) => {
+                  pdf.getPage(1).then((page) => {
+                    const viewport = page.getViewport({ scale: 1 });
+
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    canvas2.height = canvas.height;
+                    canvas2.width = canvas.width;
+
+                    page.render({
+                      canvasContext: ctx2,
+                      viewport: viewport,
+                    });
+                  });
+                })
+                .catch((err) => {
+                  console.error(err);
+                });
+            });
+        }
+      });
     </script>
   </body>
 </html>
