@@ -10,4 +10,12 @@ canvas {
   left: 0;
   transform-origin: left top;
   z-index: 1;
+  opacity: 0; /* Initially hidden */
+  animation: fadeIn 1s forwards; /* Apply the fade-in animation */
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }
