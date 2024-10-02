@@ -42,7 +42,7 @@
           <div
             class="d-flex justify-content-center align-items-center position-relative h-100 mx-auto"
           >
-            <div class="bg-white rounded-1 canvas">
+            <div class="bg-white rounded-1 canvas position-relative">
               <canvas id="canvas-1" class="pdf-canvas"></canvas>
               <canvas id="canvas-2" class="pdf-canvas"></canvas>
             </div>
@@ -51,7 +51,7 @@
       </div>
     </div>
     <script src="js/htmx/htmx.min.js"></script>
-    <!-- <script type="module">
+    <script type="module">
       import * as pdfjsLib from "./js/pdfjs/pdf.mjs";
       pdfjsLib.GlobalWorkerOptions.workerSrc = "js/pdfjs/pdf.worker.mjs";
       fetch("/resume")
@@ -60,11 +60,11 @@
           const blob = new Blob([buf], { type: "application/pdf" });
           const url = URL.createObjectURL(blob);
 
-          const canvas = document.getElementById("pdf-canvas");
+          const canvas = document.getElementById("canvas-1");
           const ctx = canvas.getContext("2d");
 
           // second canvas on load
-          const canvas2 = document.getElementById("pdf-canvas-2");
+          const canvas2 = document.getElementById("canvas-2");
           const ctx2 = canvas2.getContext("2d");
 
           const loadingTask = pdfjsLib.getDocument(url);
@@ -75,9 +75,12 @@
 
                 canvas.height = viewport.height;
                 canvas.width = viewport.width;
+                canvas.classList.add("fade-in");
+                canvas.style.zIndex = 1;
 
                 canvas2.height = canvas.height;
                 canvas2.width = canvas.width;
+                canvas2.style.zIndex = 0;
 
                 ctx2.fillStyle = "white";
                 ctx2.fillRect(0, 0, canvas2.width, canvas2.height);
@@ -104,11 +107,11 @@
               const blob = new Blob([buf], { type: "application/pdf" });
               const url = URL.createObjectURL(blob);
 
-              const canvas = document.getElementById("pdf-canvas");
+              const canvas = document.getElementById("canvas-1");
               const ctx = canvas.getContext("2d");
 
               // second canvas on load
-              const canvas2 = document.getElementById("pdf-canvas-2");
+              const canvas2 = document.getElementById("canvas-2");
               const ctx2 = canvas2.getContext("2d");
 
               const loadingTask = pdfjsLib.getDocument(url);
@@ -117,18 +120,35 @@
                   pdf.getPage(1).then((page) => {
                     const viewport = page.getViewport({ scale: 1 });
 
-                    // to-do check if canvas has content
+                    // check if the canvas has content
 
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
+                    if (canvas.classList.contains("fade-in")) {
+                      console.log("canvas 1 has content");
+                      canvas.classList.remove("fade-in");
+                      canvas2.classList.add("fade-in");
+                      canvas2.style.zIndex = 1;
+                      canvas.style.zIndex = 0;
 
-                    canvas2.height = canvas.height;
-                    canvas2.width = canvas.width;
+                      ctx2.fillStyle = "white";
+                      ctx2.fillRect(0, 0, canvas2.width, canvas2.height);
+                      page.render({
+                        canvasContext: ctx2,
+                        viewport: viewport,
+                      });
+                    } else {
+                      console.log("canvas 2 has content");
+                      canvas2.classList.remove("fade-in");
+                      canvas.classList.add("fade-in");
+                      canvas.style.zIndex = 1;
+                      canvas2.style.zIndex = 0;
 
-                    page.render({
-                      canvasContext: ctx2,
-                      viewport: viewport,
-                    });
+                      ctx.fillStyle = "white";
+                      ctx.fillRect(0, 0, canvas.width, canvas.height);
+                      page.render({
+                        canvasContext: ctx,
+                        viewport: viewport,
+                      });
+                    }
                   });
                 })
                 .catch((err) => {
@@ -137,6 +157,6 @@
             });
         }
       });
-    </script> -->
+    </script>
   </body>
 </html>
