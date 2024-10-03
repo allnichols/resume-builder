@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Resume Builder</title>
-    <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-  </head>
+  <%- include('./partials/layout/head') %>
   <body>
     <div class="container-fluid position-fixed top-0 bottom-0">
       <div class="row justify-content-between h-100">
@@ -54,114 +48,7 @@
       </div>
     </div>
     <script src="js/htmx/htmx.min.js"></script>
-    <script type="module">
-      import * as pdfjsLib from "./js/pdfjs/pdf.mjs";
-      pdfjsLib.GlobalWorkerOptions.workerSrc = "js/pdfjs/pdf.worker.mjs";
-      fetch("/resume")
-        .then((res) => res.arrayBuffer())
-        .then((buf) => {
-          const blob = new Blob([buf], { type: "application/pdf" });
-          const url = URL.createObjectURL(blob);
-
-          const canvas = document.getElementById("canvas-1");
-          const ctx = canvas.getContext("2d");
-
-          // second canvas on load
-          const canvas2 = document.getElementById("canvas-2");
-          const ctx2 = canvas2.getContext("2d");
-
-          const loadingTask = pdfjsLib.getDocument(url);
-          loadingTask.promise
-            .then((pdf) => {
-              pdf.getPage(1).then((page) => {
-                const viewport = page.getViewport({ scale: 1 });
-
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-                canvas.classList.add("fade-in");
-                canvas.style.zIndex = 1;
-
-                canvas2.height = canvas.height;
-                canvas2.width = canvas.width;
-                canvas2.style.zIndex = 0;
-
-                ctx2.fillStyle = "white";
-                ctx2.fillRect(0, 0, canvas2.width, canvas2.height);
-
-                page.render({
-                  canvasContext: ctx,
-                  viewport: viewport,
-                });
-              });
-            })
-            .catch((err) => {
-              console.error(err);
-            });
-        });
-
-      document.addEventListener("htmx:afterRequest", function (evt) {
-        const responsePath = evt.detail.pathInfo.responsePath;
-        const regex = /^\/resume\/(name|role)$/;
-
-        if (regex.test(responsePath)) {
-          fetch("/resume")
-            .then((res) => res.arrayBuffer())
-            .then((buf) => {
-              console.log("resume updated");
-
-              const blob = new Blob([buf], { type: "application/pdf" });
-              const url = URL.createObjectURL(blob);
-
-              const canvas = document.getElementById("canvas-1");
-              const ctx = canvas.getContext("2d");
-
-              // second canvas on load
-              const canvas2 = document.getElementById("canvas-2");
-              const ctx2 = canvas2.getContext("2d");
-
-              const loadingTask = pdfjsLib.getDocument(url);
-              loadingTask.promise
-                .then((pdf) => {
-                  pdf.getPage(1).then((page) => {
-                    const viewport = page.getViewport({ scale: 1 });
-
-                    // check if the canvas has content
-
-                    if (canvas.classList.contains("fade-in")) {
-                      console.log("canvas 1 has content");
-                      canvas.classList.remove("fade-in");
-                      canvas2.classList.add("fade-in");
-                      canvas2.style.zIndex = 1;
-                      canvas.style.zIndex = 0;
-
-                      ctx2.fillStyle = "white";
-                      ctx2.fillRect(0, 0, canvas2.width, canvas2.height);
-                      page.render({
-                        canvasContext: ctx2,
-                        viewport: viewport,
-                      });
-                    } else {
-                      console.log("canvas 2 has content");
-                      canvas2.classList.remove("fade-in");
-                      canvas.classList.add("fade-in");
-                      canvas.style.zIndex = 1;
-                      canvas2.style.zIndex = 0;
-
-                      ctx.fillStyle = "white";
-                      ctx.fillRect(0, 0, canvas.width, canvas.height);
-                      page.render({
-                        canvasContext: ctx,
-                        viewport: viewport,
-                      });
-                    }
-                  });
-                })
-                .catch((err) => {
-                  console.error(err);
-                });
-            });
-        }
-      });
-    </script>
+    <script type="module" src="js/scripts/initialResumeFetch.js"></script>
+    <script type="module" src="js/scripts/fetchResumeChange.js"></script>
   </body>
 </html>
