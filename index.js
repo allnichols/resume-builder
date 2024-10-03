@@ -80,6 +80,21 @@ app.put("/resume/role", (req, reply) => {
   reply.send(resume.role);
 });
 
+app.put("/resume/location", (req, reply) => {
+  resume.location = req.body.location;
+  reply.send(resume.location);
+});
+
+app.put("/resume/phone", (req, reply) => {
+  resume.phone = req.body.phone;
+  reply.send(resume.phone);
+});
+
+app.put("/resume/email", (req, reply) => {
+  resume.email = req.body.email;
+  reply.send(resume.email);
+});
+
 app.listen({ port: 3000 }, (err) => {
   if (err) {
     console.log(err);

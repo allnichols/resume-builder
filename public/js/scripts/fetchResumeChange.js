@@ -1,6 +1,6 @@
 document.addEventListener("htmx:afterRequest", function (evt) {
   const responsePath = evt.detail.pathInfo.responsePath;
-  const regex = /^\/resume\/(name|role)$/;
+  const regex = /^\/resume\/(name|role|phone|location|email)$/;
 
   if (regex.test(responsePath)) {
     fetch("/resume")
