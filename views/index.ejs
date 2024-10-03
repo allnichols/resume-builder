@@ -5,8 +5,8 @@
     <div class="container-fluid position-fixed top-0 bottom-0">
       <div class="row justify-content-between h-100">
         <div class="col-4">
-          <!-- make a template part for the form -->
-          <div class="row">
+          <h3>Personal Details</h2>
+          <div class="row mb-4">
             <div class="col">
               <input
                 type="text"
@@ -30,6 +30,62 @@
                 aria-label="Full Name"
                 value="<%= resume.name %>"
                 hx-put="resume/name"
+                hx-trigger="keyup changed delay:750ms"
+              />
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col">
+              <input
+                type="text"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="Email"
+                aria-label="Email"
+                value="<%= resume.email %>"
+                hx-put="resume/email"
+                hx-trigger="keyup changed delay:750ms"
+              />
+            </div>
+            <div class="col">
+              <input
+                type="text"
+                class="form-control"
+                id="phone"
+                name="phone"
+                placeholder="Phone"
+                aria-label="Phone"
+                value="<%= resume.phone %>"
+                hx-put="resume/phone"
+                hx-trigger="keyup changed delay:750ms"
+              />
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col">
+              <input
+                type="text"
+                class="form-control"
+                id="country"
+                name="country"
+                placeholder="Country"
+                aria-label="Country"
+                value="<%= resume.country %>"
+                hx-put="resume/country"
+                hx-trigger="keyup changed delay:750ms"
+              />
+            </div>
+            <div class="col">
+              <input
+                type="text"
+                class="form-control"
+                id="location"
+                name="location"
+                placeholder="Ex. Houston, TX"
+                aria-label="location"
+                value="<%= resume.location %>"
+                hx-put="resume/location"
                 hx-trigger="keyup changed delay:750ms"
               />
             </div>

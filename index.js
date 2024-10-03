@@ -4,6 +4,10 @@ const { PDFDocument, rgb, StandardFontValues } = require("pdf-lib");
 let resume = {
   name: "John Doe",
   role: "Software Developer",
+  country: "United States",
+  location: "New York, NY",
+  email: "mail@mail.com",
+  phone: "555-555-5555",
 };
 
 app.get("/", (req, reply) => {
@@ -16,21 +20,49 @@ app.get("/resume", async (req, reply) => {
   const pdf = await PDFDocument.create();
 
   const page = pdf.addPage([612, 792]);
+  const { width, height } = page.getSize();
 
-  const headingFontSize = 24;
-  const normalFontSize = 12;
-  const content = [
-    { text: resume.role, x: 200, y: 750, size: headingFontSize },
-    { text: resume.name, x: 50, y: 700, size: headingFontSize },
-  ];
+  const headerFontSize = 24;
+  const name = resume.name;
+  const role = resume.role;
 
-  content.forEach((c) => {
-    page.drawText(c.text, {
-      x: c.xy,
-      y: c.y,
-      size: c.size,
-    });
+  // Draw name / header
+  page.drawText(name, {
+    x: 50,
+    y: height - 50,
+    size: headerFontSize,
   });
+
+  // Draw role
+  page.drawText(role, {
+    x: 50,
+    y: height - 70,
+    size: headerFontSize / 2,
+  });
+
+  // Contact info title
+  page.drawText("Details", {
+    x: 400,
+    y: height - 120,
+    size: 16,
+  });
+  page.drawText(resume.location, {
+    x: 400,
+    y: height - 140,
+    size: 12,
+  });
+  page.drawText(resume.phone, {
+    x: 400,
+    y: height - 160,
+    size: 12,
+  });
+  page.drawText(resume.email, {
+    x: 400,
+    y: height - 180,
+    size: 12,
+  });
+
+  // Technologies
 
   const pdfBytes = await pdf.save();
 

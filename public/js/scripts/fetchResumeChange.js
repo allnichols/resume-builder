@@ -6,8 +6,6 @@ document.addEventListener("htmx:afterRequest", function (evt) {
     fetch("/resume")
       .then((res) => res.arrayBuffer())
       .then((buf) => {
-        console.log("resume updated");
-
         const blob = new Blob([buf], { type: "application/pdf" });
         const url = URL.createObjectURL(blob);
 
