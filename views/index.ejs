@@ -18,9 +18,12 @@
                 type="text"
                 class="form-control"
                 id="role"
+                name="role"
                 placeholder="Desired Role"
                 aria-label="desired role"
                 value="<%= resume.role %>"
+                hx-put="resume/role"
+                hx-trigger="keyup changed delay:750ms"
               />
             </div>
             <div class="col">
@@ -32,7 +35,7 @@
                 placeholder="Full Name"
                 aria-label="Full Name"
                 value="<%= resume.name %>"
-                hx-post="resume"
+                hx-put="resume/name"
                 hx-trigger="keyup changed delay:750ms"
               />
             </div>
@@ -97,8 +100,10 @@
         });
 
       document.addEventListener("htmx:afterRequest", function (evt) {
-        // make a function that updates the canvas based upon which one has or doesn't content
-        if (evt.detail.pathInfo.responsePath === "/resume") {
+        const responsePath = evt.detail.pathInfo.responsePath;
+        const regex = /^\/resume\/(name|role)$/;
+
+        if (regex.test(responsePath)) {
           fetch("/resume")
             .then((res) => res.arrayBuffer())
             .then((buf) => {

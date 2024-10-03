@@ -38,10 +38,15 @@ app.get("/resume", async (req, reply) => {
   reply.send(pdfBytes);
 });
 
-app.post("/resume", (req, reply) => {
+app.put("/resume/name", (req, reply) => {
   console.log("hit", req.body.name);
   resume.name = req.body.name;
   reply.send(resume.name);
+});
+
+app.put("/resume/role", (req, reply) => {
+  resume.role = req.body.role;
+  // reply.send(resume.role);
 });
 
 app.listen({ port: 3000 }, (err) => {
