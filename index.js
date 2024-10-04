@@ -8,6 +8,30 @@ let resume = {
   location: "New York, NY",
   email: "mail@mail.com",
   phone: "555-555-5555",
+  history: [
+    {
+      id: 1,
+      company: "Company 1",
+      role: "Software Developer",
+      start: "2018",
+      end: "2020",
+      points: [
+        "Worked on the front end of the application",
+        "Worked on the back end of the application",
+      ],
+    },
+    {
+      id: 2,
+      company: "Company 2",
+      role: "Software Developer",
+      start: "2016",
+      end: "2018",
+      points: [
+        "Worked on the front end of the application",
+        "Worked on the back end of the application",
+      ],
+    },
+  ],
 };
 
 app.get("/", (req, reply) => {

@@ -1,30 +1,36 @@
 <h3>Employment History</h3>
 <div class="row mb-4">
   <div class="accordion accordion-flush" id="accordionFlushExample">
-    <div class="accordion-item">
+    <% resume.history.forEach(element => { %>
+    <div class="accordion-item mb-4 border">
       <h2 class="accordion-header">
         <button
           class="accordion-button collapsed"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target="#flush-collapseOne"
+          data-bs-target="#<%= element.id %>"
           aria-expanded="false"
-          aria-controls="flush-collapseOne"
+          aria-controls="<%= element.id %>"
         >
-          Accordion Item #1
+          <%= element.company %>
         </button>
       </h2>
       <div
-        id="flush-collapseOne"
+        id="<%= element.id %>"
         class="accordion-collapse collapse"
-        data-bs-parent="#accordionFlushExample"
+        data-bs-parent="#<%= element.id %>"
       >
         <div class="accordion-body">
-          Placeholder content for this accordion, which is intended to
-          demonstrate the <code>.accordion-flush</code> class. This is the first
-          item's accordion body.
+          <input
+            type="text"
+            class="form-control mb-2"
+            value="<%= element.company %>"
+            name="company"
+            hx-put="/api/resume/history/<%= element.id %>"
+          />
         </div>
       </div>
     </div>
+    <% }) %>
   </div>
 </div>
