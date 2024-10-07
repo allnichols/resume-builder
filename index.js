@@ -119,6 +119,21 @@ app.put("/resume/email", (req, reply) => {
   reply.send(resume.email);
 });
 
+// app put with params
+app.put("/resume/history/:id", (req, reply) => {
+  console.log(req.params.id);
+  const id = parseInt(req.params.id);
+  const history = resume.history.find((h) => h.id === id);
+
+  if (history) {
+    history.company = req.body.company;
+    console.log(history.company);
+    reply.send(history.company);
+  } else {
+    reply.status(404).send("Not found");
+  }
+});
+
 app.listen({ port: 3000 }, (err) => {
   if (err) {
     console.log(err);

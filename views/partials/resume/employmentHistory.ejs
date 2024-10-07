@@ -11,6 +11,7 @@
           data-bs-target="#<%= element.id %>"
           aria-expanded="false"
           aria-controls="<%= element.id %>"
+          id="item-<%= element.id %>"
         >
           <%= element.company %>
         </button>
@@ -18,7 +19,7 @@
       <div
         id="<%= element.id %>"
         class="accordion-collapse collapse"
-        data-bs-parent="#<%= element.id %>"
+        data-bs-parent="#item-<%= element.id %>"
       >
         <div class="accordion-body">
           <input
@@ -26,7 +27,10 @@
             class="form-control mb-2"
             value="<%= element.company %>"
             name="company"
-            hx-put="/api/resume/history/<%= element.id %>"
+            hx-put="/resume/history/<%= element.id %>"
+            hx-trigger="keyup changed"
+            hx-swap="innerHTML"
+            hx-target="#item-<%= element.id %>"
           />
         </div>
       </div>
