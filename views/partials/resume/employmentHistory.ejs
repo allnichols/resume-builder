@@ -22,15 +22,45 @@
         data-bs-parent="#item-<%= element.id %>"
       >
         <div class="accordion-body">
+          <label for="title">Title:</label>
           <input
             type="text"
             class="form-control mb-2"
-            value="<%= element.company %>"
-            name="company"
+            value="<%= element.title %>"
+            name="title"
             hx-put="/resume/history/<%= element.id %>"
             hx-trigger="keyup changed"
             hx-swap="innerHTML"
             hx-target="#item-<%= element.id %>"
+          />
+
+          <label for="employer">Employer:</label>
+          <input
+            type="text"
+            class="form-control mb-2"
+            value="<%= element.employer %>"
+            name="employer"
+            hx-put="/resume/history/<%= element.id %>"
+            hx-trigger="keyup changed"
+            hx-swap="innerHTML"
+            hx-target="#item-<%= element.id %>"
+          />
+
+          <label for="start">Start month:</label>
+          <input
+            type="month"
+            id="start"
+            name="start"
+            min="1950-03"
+            value="2018-05"
+          />
+          <label for="end">End month:</label>
+          <input
+            type="month"
+            id="end"
+            name="end"
+            min="1950-03"
+            value="2018-05"
           />
         </div>
       </div>
